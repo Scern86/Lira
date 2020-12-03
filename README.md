@@ -24,7 +24,7 @@ Apache+NGINX.
 
 
 # Структура базы данных
-Содержимое:
+```Содержимое:
 - Таблица _object (список всех объектов/ресурсов):
  -- id      | varchar | 50 | PrimaryKey
  -- title   | varchar | 500
@@ -93,7 +93,7 @@ Apache+NGINX.
  -- id_object | varchar  | 50
  -- created   | DATETIME
  -- success   | tynyint  | 1
- 
+ ```
 # Структура файлов 
 
 # Лицензия
