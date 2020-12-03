@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /components
+Disallow: /classes
+Disallow: /controllers
+Disallow: /core
+Disallow: /language
+Disallow: /layouts
+Disallow: /media
+Disallow: /modules
+Disallow: /templates
