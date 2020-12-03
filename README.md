@@ -1,2 +1,2 @@
-# lira
-Small PHP Framework
+# Lira
+Small PHP platform
