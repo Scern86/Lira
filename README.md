@@ -94,7 +94,51 @@ Apache+NGINX.
  -- created   | DATETIME
  -- success   | tynyint  | 1
  ```
-# Структура файлов 
+# Структура файлов и каталогов
+```
+/classes
+        /object.php
+        /definition.php
+        /tag.php
+        /controller.php
+/components/
+           /object/...
+           /definition/...
+           /tag/...
+           ...
+/core/
+     /helpers/...
+     /lib/...
+     app.php
+     cache.php
+     config.php
+     db.php
+     document.php
+     request.php
+     session.php
+     text.php
+     user.php
+/language/
+         /ru/...
+         ...
+/media/
+      /system/
+             /filetypes/...
+/modules/...
+/shared/
+       /fields.php
+       /objects.php
+       /tags.php
+/templates/...
+.htaccess
+autoload.php
+conf.php
+favicon.ico
+index.php
+robots.txt
+sitemap.xml
+tables.php
 
+```
 # Лицензия
 Платформа Lira распространяется под лицензией под лицензией [MIT](LICENSE).
