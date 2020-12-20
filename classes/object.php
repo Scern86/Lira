@@ -2,26 +2,26 @@
 defined('_DEXEC') or DIE;
 
 class ObjectClasses{
-	
-	protected $_db;	
+
+	protected $_db;
 	protected $_id;
 	protected $_title;
 	protected $_created;
 	protected $_params = [];
-	
+
 	public function __construct($id){
 		$this->_db = DbCore::getInstance()->getDatabase('main');
 		$object = $this->_db->getRow('SELECT * FROM ?n WHERE `id`=?s',TBL_OBJECT,$id);
 		if(!empty($object)){
 			$this->_id = $object['id'];
-			$this->_title = $object['title'];			
-			$this->_created = $object['created'];			
+			$this->_title = $object['title'];
+			$this->_created = $object['created'];
 		}
 	}
 	public function __get($key){
 		$value = '_'.$key;
-		if(isset($this->$value) AND $key<>'db'){			
-			return $this->$value;			
+		if(isset($this->$value) AND $key<>'db'){
+			return $this->$value;
 		}
 		else {
 			return $this->_loadField($key);
@@ -35,10 +35,10 @@ class ObjectClasses{
 ///// Базовые процедуры	объекта
 	public static function create(array $data){
 		$db = DbCore::getInstance()->getDatabase('main');
-		return $db->query('INSERT INTO ?n SET `id`=?s,`title`=?s',TBL_OBJECT,$data['id'],$data['title']);		
+		return $db->query('INSERT INTO ?n SET `id`=?s,`title`=?s,`created`=?s',TBL_OBJECT,$data['id'],$data['title'],$data['created']);
 	}
 	public static function update(array $data){
-		$db = DbCore::getInstance()->getDatabase('main');	
+		$db = DbCore::getInstance()->getDatabase('main');
 		return $db->query('UPDATE ?n SET `title`=?s WHERE `id`=?s',TBL_OBJECT,$data['title'],$data['id']);
 	}
 	public static function remove($id){
@@ -52,8 +52,9 @@ class ObjectClasses{
 		AND $db->query('DELETE FROM ?n WHERE `id_object`=?s',TBL_EXT_DATE,$id)
 		AND $db->query('DELETE FROM ?n WHERE `id_object_parent`=?s OR `id_object_child`=?s',TBL_EXT_OBJECT,$id,$id);
 	}
-	public function getFieldInfo($field){
-		return $this->_db->getRow('SELECT * FROM ?n WHERE `title`=?s',TBL_DEFINITION,$field);
+	public static function getIdByTitle($title){
+		$db = DbCore::getInstance()->getDatabase('main');
+		return  $db->getOne('SELECT `id` FROM ?n WHERE `title`=?s',TBL_OBJECT,$title);
 	}
 ///// Работа с дополнительными полями (число,строка,текст,дата)
 	public static function addField($id_object,$definition,$value,$order=0,$params=[]){
@@ -68,7 +69,7 @@ class ObjectClasses{
 			break;
 			case 'DATETIME':
 				$result = $db->query('REPLACE ?n SET `id_object`=?s,`definition`=?s,`field`=?s',TBL_EXT_DATE,$id_object,$definition,$value);
-			break;	
+			break;
 			case 'TEXT':
 				$result = $db->query('REPLACE ?n SET `id_object`=?s,`definition`=?s,`field`=?s',TBL_EXT_SHORT_TEXT,$id_object,$definition,$value);
 			break;
@@ -84,7 +85,7 @@ class ObjectClasses{
 				if(!empty($value)) foreach($value as $item){
 					$result = $db->query('REPLACE ?n SET `id_object_parent`=?s,`id_object_child`=?s,`definition`=?s,`order`=?i,`params`=?s',TBL_EXT_OBJECT,$id_object,$item,$definition,(int)$order,json_encode($params));
 				}
-			break;			
+			break;
 		}
 		return $result;
 	}
@@ -102,13 +103,13 @@ class ObjectClasses{
 					break;
 					case 'DATETIME':
 						return $db->query('UPDATE ?n SET `field`=?s WHERE `id_object`=?s AND `definition`=?s',TBL_EXT_DATE,$value,$id_object,$definition);
-					break;	
+					break;
 					case 'TEXT':
 						return $db->query('UPDATE ?n SET `field`=?s WHERE `id_object`=?s AND `definition`=?s',TBL_EXT_SHORT_TEXT,$value,$id_object,$definition);
 					break;
 					case 'LONGTEXT':
 						return $db->query('UPDATE ?n SET `field`=?s WHERE `id_object`=?s AND `definition`=?s',TBL_EXT_LONG_TEXT,$value,$id_object,$definition);
-					break;			
+					break;
 				}
 			break;
 			case 'tag':
@@ -117,8 +118,8 @@ class ObjectClasses{
 			break;
 			case 'object':
 				return $db->query('INSERT INTO ?n SET `id_object_parent`=?s,`definition`=?s,`id_object_child`=?s,`order`=?i,`params`=?s',TBL_EXT_OBJECT,$id_object,$definition,$value,(int)$order,json_encode($params));
-			break;			
-		}	
+			break;
+		}
 	}
 	public static function removeField($id_object,$definition,$field=NULL){
 		$db = DbCore::getInstance()->getDatabase('main');
@@ -132,19 +133,19 @@ class ObjectClasses{
 			break;
 			case 'DATETIME':
 				$result = $db->query('DELETE FROM ?n WHERE `id_object`=?s AND `definition`=?s',TBL_EXT_DATE,$id_object,$definition);
-			break;	
+			break;
 			case 'TEXT':
 				$result = $db->query('DELETE FROM ?n WHERE `id_object`=?s AND `definition`=?s',TBL_EXT_SHORT_TEXT,$id_object,$definition);
 			break;
 			case 'LONGTEXT':
 				$result = $db->query('DELETE FROM ?n WHERE `id_object`=?s AND `definition`=?s',TBL_EXT_LONG_TEXT,$id_object,$definition);
-			break;			
+			break;
  			case 'TAG':
 				$result = $db->query('DELETE FROM ?n WHERE `id_object`=?s AND `definition`=?s AND `id_tag`=?s',TBL_EXT_TAG,$id_object,$definition,$field);
 			break;
 			case 'OBJECT':
 				$result = $db->query('DELETE FROM ?n WHERE `id_object_parent`=?s AND `id_object_child`=?s AND `definition`=?s',TBL_EXT_OBJECT,$id_object,$field,$definition);
-			break;			
+			break;
 		}
 		return $result;
 	}
@@ -159,7 +160,7 @@ class ObjectClasses{
 			break;
 			case 'DATETIME':
 				$result = $this->_db->getOne('SELECT `field` FROM ?n WHERE `id_object`=?s AND `definition`=?s',TBL_EXT_DATE,$this->_id,$key);
-			break;	
+			break;
 			case 'TEXT':
 				$result = $this->_db->getOne('SELECT `field` FROM ?n WHERE `id_object`=?s AND `definition`=?s',TBL_EXT_SHORT_TEXT,$this->_id,$key);
 			break;
@@ -171,7 +172,7 @@ class ObjectClasses{
 			break;
 			case 'OBJECT':
 					$result = $this->_db->getAll('SELECT eo.`id_object_child` `id`,eo.`definition`,eo.`order`,eo.`params` FROM ?n eo,?n o WHERE eo.`id_object_child`=o.`id` AND eo.`id_object_parent`=?s AND eo.`definition`=?s ORDER BY eo.`order`,o.`title`',TBL_EXT_OBJECT,TBL_OBJECT,$this->_id,$key);
-			break;			
+			break;
 		}
 		return $result;
 	}

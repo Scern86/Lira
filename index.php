@@ -7,9 +7,7 @@ include_once 'tables.php';
 
 spl_autoload_register('Autoload');
 
-echo 'WORKING';
-
-/* $app = new AppCore;
+$app = new AppCore;
 
 $app->auth();
 
@@ -17,4 +15,4 @@ $app->route();
 
 $app->redirect();
 
-$app->render(); */
+$app->render();
