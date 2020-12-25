@@ -1,10 +1,10 @@
 <?php
 defined('_DEXEC') or DIE;
 
-// Системные таблицы (авторизация, действия)
+// Системные таблицы (авторизация)
 const TBL_LOGIN					= 'main_login';				// Авторизация
 
-// Системные объекты
+// Системные объекты (ресурсы)
 const TBL_TAG					= 'main_tag';				// Теги (определения)
 const TBL_DEFINITION			= 'main_definition';		// Определения свойств объектов
 const TBL_OBJECT				= 'main_object';			// Объекты

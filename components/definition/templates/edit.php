@@ -4,7 +4,7 @@ if(!empty($data)) extract($data);
 $text = TextCore::getInstance(); 
 ?>
 <div class="card m-1 bg-light">
-	<div class="card-header text-right text-warning"><strong>Определение  <i class="fa fa-pencil-alt"></i></strong></div>
+	<div class="card-header text-right text-warning"><strong><?=$text->definition;?>  <i class="fa fa-pencil-alt"></i></strong></div>
 	<div class="card-body">
 		<form action="" method="POST" name="edit" id="edit">
 			<input type="hidden" name="action" value="edit" />

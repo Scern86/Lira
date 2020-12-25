@@ -1,10 +1,11 @@
 <?php 
 defined('_DEXEC') or DIE;
 if(!empty($data)) extract($data); 
+$text = TextCore::getInstance(); 
 ?>
 <div class="card bg-dark m-1" id="toolbar">
 	<div class="card-header">	
-		<a href="/?com=tag&task=add" class="btn btn-success" title="Создать"><i class="fas fa-plus"></i></a>
+		<a href="/?com=tag&task=add" class="btn btn-success" title="<?=$text->add?>"><i class="fas fa-plus"></i></a>
 	</div>
 </div>
 <script>

@@ -63,8 +63,6 @@ defined('_DEXEC') or DIE;
 
 class MysqlCoreLib
 {
-    //protected static $_instance;
-
 	private $conn;
 	private $stats;
 	private $emode;
@@ -107,16 +105,6 @@ class MysqlCoreLib
 		mysqli_set_charset($this->conn, $opt['charset']) or $this->error(mysqli_error($this->conn));
 		unset($opt); // I am paranoid
 	}
-
-/* 	private function __wakeup(){}
-	private function __clone(){}
-	
-	public static function getInstance($options) {
-		if(self::$_instance===null) {
-			self::$_instance=new self($options);
-		}
-		return self::$_instance;
-	} */
 	
 	/**
 	 * Conventional function to run a query with placeholders. A mysqli_query wrapper with placeholders support

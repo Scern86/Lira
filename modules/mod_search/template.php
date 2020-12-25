@@ -1,7 +1,6 @@
 <?php 
+defined('_DEXEC') or DIE;
 if(!empty($data)) extract($data);
-$session = SessionCore::getInstance();
-$user = UserCore::getInstance()->getUser();
 ?>
 <form action="#" method="POST" role="form" class="m-1">
 	<div class="row no-gutters">

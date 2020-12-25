@@ -1,4 +1,5 @@
 <?php
+defined('_DEXEC') or DIE;
 
 class RenderCoreHelpers{
 
@@ -11,5 +12,5 @@ class RenderCoreHelpers{
 			ob_end_clean();;
 			return $d;
 		}
-	} 
+	}
 }

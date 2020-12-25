@@ -1,4 +1,5 @@
 <?php
+defined('_DEXEC') or DIE;
 
 class GeneratorCoreHelpers{
 	

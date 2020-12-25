@@ -15,10 +15,10 @@ foreach($main->access as $item){
 	<?php if($main->params['mode']=='small'){?>
 		<p><a href="<?=$hostname;?>/<?=$url;?>"><?=$main->title;?></a></p>
 	<?php }else{ ?>
-		<?php if($main->params['show_title']==1){?>
-		<h1 class="text-center"><a href="<?=$hostname;?>/<?=$url;?>"><?=$main->title;?></a></h1>
-		<?php } ?>
 		<?php if($main->params['mode']=='medium'){?>
+			<?php if($main->params['show_title']==1){?>
+			<h1 class="text-center"><a href="<?=$hostname;?>/<?=$url;?>"><?=$main->title;?></a></h1>
+			<?php } ?>		
 			<div class="content">
 				<?=$main->content;?>
 				<?=$main->longtext;?>
@@ -42,6 +42,9 @@ foreach($main->access as $item){
 			}
 			</style>
 		<?php }else{?>
+			<?php if($main->params['show_title']==1){?>
+			<h1 class="text-center"><?=$main->title;?></h1>
+			<?php } ?>		
 			<?=$main->content;?>
 			<?=$main->longtext;?>		
 			<div class="clearfix">

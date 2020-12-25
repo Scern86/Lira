@@ -3,6 +3,7 @@ defined('_DEXEC') or DIE;
 
 class AppCore{
 
+	protected $_system;
 	protected $_config;
 	protected $_db;
 	protected $_session;
@@ -14,11 +15,12 @@ class AppCore{
 		$this->_config = ConfigCore::getInstance();
 		$db = DbCore::getInstance();
 		$db->init('main',$this->_config->database);		
-		$this->_db = $db->getDatabase('main');		
+		$this->_db = $db->getDatabase('main');
+		$this->_system = new ObjectClasses(ObjectClasses::getIdByTitle('Система'));		
 		$this->_request = RequestCore::getInstance();
 		$this->_session = SessionCore::getInstance();		
 		$this->_user = UserCore::getInstance();
-		$this->_text = TextCore::getInstance()->addText('ru','main');
+		$this->_text = TextCore::getInstance()->addText(ConfigCore::getInstance()->sys_lang,'main');
 	}
 	public function auth(){
 		if($this->_request->auth=='logout') $this->_user->logout();	
@@ -43,7 +45,11 @@ class AppCore{
 		DocumentCore::addString('title',' | '.$this->_config->site_name,FALSE);
 		DocumentCore::addString('site_name',$this->_config->site_name);	
 		$this->_load_modules();		
-		echo RenderCoreHelpers::render('templates',$this->_config->template,DocumentCore::getContent());
+		$doc_tpl = DocumentCore::getTemplate();
+		$sys_tpl = $this->_system->template;
+		if($doc_tpl) $template = $doc_tpl;
+		else $template = $sys_tpl;
+		echo RenderCoreHelpers::render('templates',$template,DocumentCore::getContent());
 	}
 	protected function _load_modules(){
 		$list_modules = $this->_db->getCol('SELECT es.`id_object` FROM ?n es,?n en WHERE es.`id_object`=en.`id_object` AND es.`definition`=?s AND en.`definition`=?s ORDER BY en.`field`',TBL_EXT_STRING,TBL_EXT_NUMBER,'module','order');

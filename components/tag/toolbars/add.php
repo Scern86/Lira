@@ -1,14 +1,15 @@
 <?php 
 defined('_DEXEC') or DIE;
 if(!empty($data)) extract($data); 
+$text = TextCore::getInstance(); 
 ?>
 <div class="card bg-dark m-1" id="toolbar">
 	<div class="card-header">
-		<a href="/?com=tag&task=list" class="btn btn-secondary" title="Назад"><i class="fas fa-arrow-left"></i></a>
+		<a href="/?com=tag&task=list" class="btn btn-secondary" title="<?=$text->back?>"><i class="fas fa-arrow-left"></i></a>
 		&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
-		<a href="#" class="btn btn-success" onclick="document.add.action='/?com=tag&task=add'; document.add.submit(); return false;" title="Сохранить и закрыть"><i class="fas fa-save"></i> <i class="fas fa-times"></i></a>
-		<a href="#" class="btn btn-warning" onclick="document.add.action='/?com=tag&task=add&type=save'; document.add.submit(); return false;" title="Сохранить"><i class="fas fa-save"></i></a>
-		<a href="#" class="btn btn-info" onclick="document.add.action='/?com=tag&task=add&type=new'; document.add.submit(); return false;" title="Сохранить и создать"><i class="fas fa-save"></i> <i class="fas fa-plus"></i></a>
+		<a href="#" class="btn btn-success" onclick="document.add.action='/?com=tag&task=add'; document.add.submit(); return false;" title="<?=$text->save_and_close?>"><i class="fas fa-save"></i> <i class="fas fa-times"></i></a>
+		<a href="#" class="btn btn-warning" onclick="document.add.action='/?com=tag&task=add&type=save'; document.add.submit(); return false;" title="<?=$text->save?>"><i class="fas fa-save"></i></a>
+		<a href="#" class="btn btn-info" onclick="document.add.action='/?com=tag&task=add&type=new'; document.add.submit(); return false;" title="<?=$text->save_and_new?>"><i class="fas fa-save"></i> <i class="fas fa-plus"></i></a>
 	</div>
 </div>
 <script>

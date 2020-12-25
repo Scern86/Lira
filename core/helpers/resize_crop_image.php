@@ -3,7 +3,7 @@ defined('_DEXEC') or DIE;
 
 class Resize_crop_imageCoreHelpers{
 
-	private function _resizeAndCrop($catalog_to_save,$original_file,$new_file_name,$prev_w,$prev_h,$main_w){
+	public static function resizeAndCrop($catalog_to_save,$original_file,$new_file_name,$prev_w,$prev_h,$main_w,$quality=80){
 		$img_info = getimagesize($original_file);
 
 		switch($img_info['mime']){
@@ -29,12 +29,12 @@ class Resize_crop_imageCoreHelpers{
 		}
 		$thumb = imagecreatetruecolor($prev_w,$prev_h);
 		imagecopyresampled($thumb,$src,0-($new_w - $prev_w)/2,0-($new_h - $prev_h)/2,0,0,$new_w,$new_h,$orig_w,$orig_h);
-		imagejpeg($thumb,$catalog_to_save.DS.'small_'.$new_file_name,80);
+		imagejpeg($thumb,$catalog_to_save.DS.'small_'.$new_file_name,$quality);
 
 		$ratio = $main_w / $orig_w;
 		$main_h = $orig_h * $ratio;
 		$main = imagecreatetruecolor($main_w,$main_h);
 		imagecopyresampled($main,$src,0,0,0,0,$main_w,$main_h,$orig_w,$orig_h);
-		imagejpeg($main,$catalog_to_save.DS.'medium_'.$new_file_name,80);
+		imagejpeg($main,$catalog_to_save.DS.'medium_'.$new_file_name,$quality);
 	}	
 }

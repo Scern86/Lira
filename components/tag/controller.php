@@ -3,11 +3,11 @@ defined('_DEXEC') or DIE;
 
 class ControllerComponentsTag extends ControllerClasses{
 
-	public function __construct(){
+	public function __construct(){		
 		parent::__construct();
 		$this->_component = 'tag';
 		$this->_path = 'components'.DS.$this->_component;
-		$this->_text->addText('ru',$this->_component);
+		$this->_text->addText(ConfigCore::getInstance()->sys_lang,$this->_component);
 	}
 	public function action(){
 		switch($this->_request->task){

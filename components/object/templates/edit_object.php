@@ -39,6 +39,7 @@ $params = json_decode($object['params'],1);
 			<div class="form-group">
 				<label class="control-label" for="params[type]"><strong>Шаблон отображения</strong></label>
 				<select class="form-control" id="params[type]" name="params[type]">
+					<option value="default"><?=$type;?></option>
 					<?php if(!empty($type_list)) foreach($type_list as $type){?>
 						<?php if($type==$params['type']){?>
 					<option value="<?=$type;?>" selected><?=$type;?></option>
