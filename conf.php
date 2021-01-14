@@ -1,7 +1,7 @@
 <?php
 defined('_DEXEC') or DIE;
 
-$config = [
+return [
 			'database'=>[
 						'user'=>'test',
 						'pass'=>'test',
@@ -13,5 +13,7 @@ $config = [
 			'site_name'=>'Lira',
 			'template'=>'3col',
 			'sys_lang'=>'ru',
-			'main_page'=>'com=object&task=show&alias=main',			
+			'main_page'=>'com=object&task=show&alias=main',
+			'media_path'=>'media',
+			'cache_path'=>'cache',			
 ];

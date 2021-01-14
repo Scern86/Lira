@@ -5,7 +5,7 @@ $text = TextCore::getInstance();
 ?>
 <div class="card m-1 border border-success">	
 	<div class="card-header bg-success text-center text-light p-1">
-		<strong>Простой тип поля</strong>		
+		<strong><?=$text->field_type?></strong>		
 	</div>
 	<table class="table table-hover table-sm">
 		<tbody>

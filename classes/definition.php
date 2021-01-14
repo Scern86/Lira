@@ -32,6 +32,6 @@ class DefinitionClasses{
 			$value = '_'.$key;
 			return $this->$value;			
 		}
-		else return FALSE;
+		return FALSE;
 	}	
 }

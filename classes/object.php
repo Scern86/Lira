@@ -44,14 +44,23 @@ class ObjectClasses{
 	public static function remove($id){
 		$db = DbCore::getInstance()->getDatabase('main');
 		return $db->query('DELETE FROM ?n WHERE `id`=?s',TBL_OBJECT,$id)
-		AND $db->query('DELETE FROM ?n WHERE `id_object`=?s',TBL_EXT_TAG,$id)
-		AND $db->query('DELETE FROM ?n WHERE `id_object`=?s',TBL_EXT_STRING,$id)
-		AND $db->query('DELETE FROM ?n WHERE `id_object`=?s',TBL_EXT_NUMBER,$id)
-		AND $db->query('DELETE FROM ?n WHERE `id_object`=?s',TBL_EXT_SHORT_TEXT,$id)
-		AND $db->query('DELETE FROM ?n WHERE `id_object`=?s',TBL_EXT_LONG_TEXT,$id)
-		AND $db->query('DELETE FROM ?n WHERE `id_object`=?s',TBL_EXT_DATE,$id)
-		AND $db->query('DELETE FROM ?n WHERE `id_object_parent`=?s OR `id_object_child`=?s',TBL_EXT_OBJECT,$id,$id);
+		 AND $db->query('DELETE FROM ?n WHERE `id_object`=?s',TBL_EXT_TAG,$id)
+		 AND $db->query('DELETE FROM ?n WHERE `id_object`=?s',TBL_EXT_STRING,$id)
+		 AND $db->query('DELETE FROM ?n WHERE `id_object`=?s',TBL_EXT_NUMBER,$id)
+		 AND $db->query('DELETE FROM ?n WHERE `id_object`=?s',TBL_EXT_SHORT_TEXT,$id)
+		 AND $db->query('DELETE FROM ?n WHERE `id_object`=?s',TBL_EXT_LONG_TEXT,$id)
+		 AND $db->query('DELETE FROM ?n WHERE `id_object`=?s',TBL_EXT_DATE,$id)
+		 AND $db->query('DELETE FROM ?n WHERE `id_object_parent`=?s OR `id_object_child`=?s',TBL_EXT_OBJECT,$id,$id);
 	}
+/* 	public function getFieldInfo($field){
+		// !!!!!!!!! ??????
+		return $this->_db->getRow('SELECT * FROM ?n WHERE `title`=?s',TBL_DEFINITION,$field);
+	} */
+	public function isHaveTag($tag){
+		$result = $this->_db->getOne('SELECT t.`id` FROM ?n o,?n ft,?n t WHERE ft.`id_object`=o.`id` AND ft.`id_tag`=t.`id` AND t.`title`=?s AND o.`id`=?s',TBL_OBJECT,TBL_EXT_TAG,TBL_TAG,$tag,$this->_id);
+		if($result) return TRUE;
+		else return FALSE;
+	}	
 	public static function getIdByTitle($title){
 		$db = DbCore::getInstance()->getDatabase('main');
 		return  $db->getOne('SELECT `id` FROM ?n WHERE `title`=?s',TBL_OBJECT,$title);

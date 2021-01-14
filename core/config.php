@@ -7,8 +7,7 @@ class ConfigCore{
 	protected $_config;
 
 	private function __construct(){
-		include './conf.php';
-		$this->_config = $config;
+		$this->_config = require_once('./conf.php');
 	}
 	private function __wakeup(){}
 	private function __clone(){}
@@ -20,7 +19,6 @@ class ConfigCore{
 		return self::$_instance;
 	}
 	public function __get($key){
-		if(array_key_exists($key,$this->_config)) return $this->_config[$key];
-		else return FALSE;
+		return $this->_config[$key];
 	}
 }

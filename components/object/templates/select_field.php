@@ -10,3 +10,4 @@ $text = TextCore::getInstance();
 <p><a href="/?com=object&task=add_field&id=<?=$id;?>&type=longtext">Большой текст</a></p>
 <p><a href="/?com=object&task=add_field&id=<?=$id;?>&type=tag">Тег</a></p>
 <p><a href="/?com=object&task=add_field&id=<?=$id;?>&type=object">Объект</a></p>
+<p><a href="/?com=object&task=add_field&id=<?=$id;?>&type=upload">Загрузить объект/ы</a></p>

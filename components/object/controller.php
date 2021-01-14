@@ -235,73 +235,9 @@ class ControllerComponentsObject extends ControllerClasses{
 		}
 	}
 	protected function _upload(){
-		if($this->_request->post('action')=='upload' AND !empty($_FILES['upload']['name'][0])){
-			$result = [];
-			$hostname = ConfigCore::getInstance()->hostname;
-			$total = count($_FILES['upload']['name']);
-			$year = date('Y');
-			$month = date('m');
-			$day = date('d');
-			$cat = bin2hex(random_bytes(1));
-			$image_types = ['jpg','jpeg','png','bmp','webp','gif'];
-			$document_types = ['doc','docx','rtf','txt','odt','xls','xlsx','ppt','pptx','ods','rar','zip','7z','pdf','fb2','epub','djvu','m3u','jpg','png','htm','html'];
-			$music_types = ['mp3',];
-			$all_types = array_merge($image_types,$document_types,$music_types);
-			for($a=0;$a<$total;$a++){
-				$oldFile = $_FILES['upload']['tmp_name'][$a];
-				if($oldFile !=''){
-
-					$old_filename = $_FILES['upload']['name'][$a];
-					$new_filename = bin2hex(random_bytes(10)).'.'.pathinfo($old_filename)['extension'];
-					//$new_filename = bin2hex(random_bytes(10));
-					//$new_file_name_extension = pathinfo($old_filename)['extension'];
-					$is_image = in_array(strtolower(pathinfo($old_filename)['extension']),$image_types);
-					$is_document = in_array(strtolower(pathinfo($old_filename)['extension']),$document_types);
-					$is_music = in_array(strtolower(pathinfo($old_filename)['extension']),$music_types);
-					if(!in_array(strtolower(pathinfo($old_filename)['extension']),$all_types)) CONTINUE;
-					$path = 'media'.DS.$year.DS.$month.DS.$day.DS.$cat;
-					mkdir($path,0777,TRUE);
-					chmod($path,0777);
-
-					$newFile = $path.DS.$new_filename;
-					if(move_uploaded_file($oldFile,$newFile)){
-						$id_object = GeneratorCoreHelpers::generateId(10);
-						$data = [
-							'id'=>$id_object,
-							'title'=>htmlspecialchars(str_replace('.'.pathinfo($old_filename)['extension'],'',$old_filename)),
-							'created'=>date('Y-m-d H:i:s'),
-						];
-						$object = ObjectClasses::create($data);
-						if($is_image){
-
-							$this->_resizeAndCrop($path,$newFile,$new_filename,$this->_request->post('w') ?? 200,$this->_request->post('h') ?? 200,$this->_request->post('m') ?? 1280);
-							ObjectClasses::addField($id_object,'small',$hostname.DS.$path.DS.'small_'.$new_filename);
-							ObjectClasses::addField($id_object,'medium',$hostname.DS.$path.DS.'medium_'.$new_filename);
-							ObjectClasses::addField($id_object,'large',$hostname.DS.$path.DS.$new_filename);
-							ObjectClasses::addField($id_object,'type',[TagClasses::getIdByTitle('Изображение')],0);
-						}
-						elseif($is_document){
-							ObjectClasses::addField($id_object,'path',$hostname.DS.$path.DS.$new_filename);
-							ObjectClasses::addField($id_object,'type',[TagClasses::getIdByTitle('Документ')],0);
-						}
-						else{
-							ObjectClasses::addField($id_object,'path',$hostname.DS.$path.DS.$new_filename);
-							ObjectClasses::addField($id_object,'type',[TagClasses::getIdByTitle('Аудиотрек')],0);
-						}
-						ObjectClasses::addField($id_object,'access',['5e1cc7832dcbd43148d5'],0);
-						$count++;
-					}
-					else {
-						echo 'ACCESS DENIED TO MEDIA DIRECTORY';
-						exit();
-					}
-				}
-			}
+		DocumentCore::addContent('content',5,RenderCoreHelpers::render($this->_path.DS.'toolbars','upload',NULL));
+		if(UploadCoreHelpers::upload(TRUE)) {
 			DocumentCore::addHeader('Location: /?com=object&task=list');
-		}
-		else{
-			DocumentCore::addContent('content',5,RenderCoreHelpers::render($this->_path.DS.'toolbars','upload',NULL));
-			DocumentCore::addContent('content',20,RenderCoreHelpers::render($this->_path.DS.'templates','upload',NULL));
 		}
 	}
 	protected function _edit(){
@@ -363,13 +299,24 @@ class ControllerComponentsObject extends ControllerClasses{
 		DocumentCore::addContent('content',20,RenderCoreHelpers::render($this->_path.DS.'templates','select_field',$data));
 	}
 	protected function _add_field(){
-		if($this->_request->post('action')=='add_field'){
-			if(ObjectClasses::addField($this->_request->id,$this->_request->post('definition'),$this->_request->post('value'))){
-				DocumentCore::addHeader('Location: /?com=object&task=edit&id='.$this->_request->id);
+		if($this->_request->post('action')=='add_field' OR $this->_request->post('action')=='upload'){
+			if($this->_request->type=='upload' AND !empty($_FILES['upload']['name'][0])){
+				$upload_result = UploadCoreHelpers::upload(TRUE);
+				if($upload_result['done']) {
+					foreach($upload_result['success'] as $file){
+						ObjectClasses::addField($this->_request->id,'attachment',[$file],0,['type'=>'default','mode'=>'medium','show_title'=>0]);
+					}
+				}				
 			}
 			else{
-				DocumentCore::addHeader('Location: /?com=object&task=edit&id='.$this->_request->id);
+				if(ObjectClasses::addField($this->_request->id,$this->_request->post('definition'),$this->_request->post('value'))){
+
+				}
+				else{
+					
+				}				
 			}
+			DocumentCore::addHeader('Location: /?com=object&task=edit&id='.$this->_request->id);
 		}
 		else{
 			switch($this->_request->type){
@@ -403,6 +350,9 @@ class ControllerComponentsObject extends ControllerClasses{
 						$data['objects'][$item['id']] = $item;
 						$data['objects'][$item['id']]['tags'][] = $tag_list[$item['id']];
 					}
+				break;
+				case 'upload':
+					UploadCoreHelpers::upload(TRUE);
 				break;
 			}
 			$data['id'] = $this->_request->id;
@@ -499,47 +449,5 @@ class ControllerComponentsObject extends ControllerClasses{
 		else {
 			DocumentCore::addHeader('Location: /');
 		}
-	}
-	private function _resizeAndCrop($catalog_to_save,$original_file,$new_file_name,$prev_w,$prev_h,$main_w){
-		$img_info = getimagesize($original_file);
-		switch($img_info['mime']){
-			case 'image/jpeg':
-				$src = imagecreatefromjpeg($original_file);
-			break;
-			case 'image/png':
-				$src = imagecreatefrompng($original_file);
-			break;
-			case 'image/bmp':
-				$src = imagecreatefrombmp($original_file); 
-			break;
-			case 'image/webp':
-				$src = imagecreatefromwebp($original_file); 
-			break;
-			case 'image/gif':
-				$src = imagecreatefromgif($original_file); 
-			break;			
-		}
-
-		$orig_w = imagesx($src);
-		$orig_h = imagesy($src);
-		$orig_aspect = $orig_w / $orig_h;
-		$prev_aspect = $prev_w / $prev_h;
-		if($orig_aspect >= $prev_aspect){
-			$new_h = $prev_h;
-			$new_w = $orig_w / ($orig_h / $prev_h);
-		}
-		else{
-			$new_w = $prev_w;
-			$new_h = $orig_h / ($orig_w / $prev_w);
-		}
-		$thumb = imagecreatetruecolor($prev_w,$prev_h);
-		imagecopyresampled($thumb,$src,0-($new_w - $prev_w)/2,0-($new_h - $prev_h)/2,0,0,$new_w,$new_h,$orig_w,$orig_h);
-		imagejpeg($thumb,$catalog_to_save.DS.'small_'.$new_file_name,80);
-
-		$ratio = $main_w / $orig_w;
-		$main_h = $orig_h * $ratio;
-		$main = imagecreatetruecolor($main_w,$main_h);
-		imagecopyresampled($main,$src,0,0,0,0,$main_w,$main_h,$orig_w,$orig_h);
-		imagejpeg($main,$catalog_to_save.DS.'medium_'.$new_file_name,80);
 	}
 }

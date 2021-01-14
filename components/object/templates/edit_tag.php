@@ -9,11 +9,11 @@ $tag_info = new TagClasses($tag['id_tag']);
 	<input type="hidden" id="field" name="field" value="<?=$tag['id_tag'];?>" />
 	<div class="card m-1">
 		<div class="card-header">
-			<strong class="float-right text-warning">Объект: <?=$main->title;?> / Тег: <?=$tag_info->title;?> <i class="fa fa-pencil-alt"></i></strong>
+			<strong class="float-right text-warning"><?=$text->object?>: <?=$main->title;?> / Тег: <?=$tag_info->title;?> <i class="fa fa-pencil-alt"></i></strong>
 		</div>			
 		<div class="card-body">
 			<div class="form-group">
-				<label class="control-label" for="defintion"><strong>Определение</strong></label>
+				<label class="control-label" for="defintion"><strong><?=$text->definition?></strong></label>
 				<select class="form-control" id="definition" name="definition">
 					<?php if(!empty($fields)) foreach($fields as $item){?>
 						<?php if($item['title']==$tag['definition']){?>
@@ -25,7 +25,7 @@ $tag_info = new TagClasses($tag['id_tag']);
 				</select>
 			</div>			
 			<div class="form-group">
-				<label class="control-label" for="order"><strong>Порядок</strong></label>		
+				<label class="control-label" for="order"><strong><?=$text->order?></strong></label>		
 				<input class="form-control" type="number" id="order" name="order" value="<?=$tag['order'];?>" />
 			</div>
 		</div>

@@ -30,7 +30,7 @@ class SessionCore{
 		$_SESSION[$key] = $value;
 	}
 	public static function remove($key){
-		setcookie($key);
+		setcookie($key,null, -1, '/');
 		unset($_SESSION[$key]);
 	}
 	public static function destroySession(){

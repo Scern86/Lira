@@ -16,7 +16,7 @@ class TagClasses{
 	public static function create($data){
 		$db = DbCore::getInstance()->getDatabase('main');
 		if(!$db->getOne('SELECT `id` FROM ?n WHERE `title`=?s',TBL_TAG,$data['title'])) return $db->query('INSERT INTO ?n SET `id`=?s,`title`=?s',TBL_TAG,$data['id'],$data['title']);
-		else return TRUE;
+		return TRUE;
 	}
 	public static function update($data){
 		$db = DbCore::getInstance()->getDatabase('main');
@@ -32,7 +32,7 @@ class TagClasses{
 			$value = '_'.$key;
 			return $this->$value;			
 		}
-		else return FALSE;
+		return FALSE;
 	}
 	public static function getIdByTitle($title){
 		$db = DbCore::getInstance()->getDatabase('main');

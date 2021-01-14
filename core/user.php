@@ -15,7 +15,7 @@ class UserCore{
 		$this->_session = SessionCore::getInstance();
 		$this->_request = RequestCore::getInstance();
 		$this->_user = new ObjectClasses(0); 
- 		if(!$this->checkLogin()) $this->verifyUser($this->_request->post('login'),$this->_request->post('password'));
+ 		if(!$this->checkLogin() AND $this->_request->post('action')=='login') $this->verifyUser($this->_request->post('login'),$this->_request->post('password'));
 	}
 	private function __wakeup(){}
 	private function __clone(){}
@@ -36,11 +36,10 @@ class UserCore{
 			}
 			else{
 				$this->_session->destroySession();
-				$this->_logged_in = FALSE;
-				return FALSE;				
+				$this->_logged_in = FALSE;				
 			}
 		}
-		else return FALSE;
+		return FALSE;
 	}
  	public function verifyUser($login,$password){
 		if(!empty($login) AND !empty($password)){
@@ -53,11 +52,8 @@ class UserCore{
 				header('Location: /');
 				return TRUE;				
 			}
-			else {
-				return FALSE;
-			}
 		}
-		else return FALSE;
+		return FALSE;
 	}
 	public function logout(){
 		$this->_session->destroySession();

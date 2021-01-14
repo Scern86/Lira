@@ -5,7 +5,7 @@ $text = TextCore::getInstance();
 ?>
 <div class="card m-1 border border-primary">	
 	<div class="card-header bg-primary text-center text-light p-1">
-		<strong>Тег</strong>		
+		<strong><?=$text->tag?></strong>		
 	</div>
 	<table class="table table-hover table-sm">
 		<tbody>

@@ -7,7 +7,7 @@ $text = TextCore::getInstance();
 	<table class="table table-hover table-sm">
 		<thead class="thead-light">
 			<th><?=$text->title?></th>
-			<th width="150"></th>
+			<th width="150" class="text-right"><?=$text->control?></th>
 		</thead>
 		<tbody id="result">
 			<?php if(!empty($list)) foreach($list as $item){ ?>

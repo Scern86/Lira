@@ -23,6 +23,6 @@ class DbCore{
 	}
 	public function getDatabase($key){
 		if(array_key_exists($key,$this->_databases)) return $this->_databases[$key];
-		else return FALSE;
+		return FALSE;
 	}
 }
