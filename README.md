@@ -11,9 +11,9 @@
 
 
 # Требования
-PHP версии 7.1 или выше.
+PHP версии 7.
 MySQL.
-Apache+NGINX.
+Apache(+NGINX).
 
 # Установка
 Установщика нет.
@@ -95,13 +95,19 @@ Apache+NGINX.
  ```
 # Структура каталогов
 ```
-/classes
 /components/
-/core/
-/language/
-/media/
-/modules/
-/templates/
+/components/Definition/...
+/components/Object/...
+/components/Tag/...
+/language/...
+/media/...
+/modules/...
+/src/
+/src/Classes/...
+/src/Core/...
+/src/Helpers/...
+/src/Lib/...
+/templates/...
 ```
 # Лицензия
 Платформа Lira распространяется под лицензией под лицензией [MIT](LICENSE).
