@@ -1,11 +1,11 @@
 <?php
 defined('_DEXEC') or DIE;
 if(!empty($data)) extract($data);
-$hostname = ConfigCore::getInstance()->hostname;
+$hostname = \Scern\Lira\Core\Config::getInstance()->hostname;
 $alias = $main->alias;
 if(!empty($alias)) $url = $alias;
 else $url = '?com=object&task=show&id='.$main->id;
-$user = UserCore::getInstance();
+$user = \Scern\Lira\Core\User::getInstance();
 foreach($main->access as $item){
 	$access[] = $item['id'];
 }
@@ -24,7 +24,7 @@ foreach($main->access as $item){
 				<?=$main->longtext;?>
 				<div class="clearfix">
 				<?php if($main->attachment) foreach($main->attachment as $item){ ?>		
-					<?php $attachment = new ObjectClasses($item['id']); ?>
+					<?php $attachment = new \Scern\Lira\Classes\Object($item['id']); ?>
 						<?php $params = json_decode($item['params'],1);?>
 						<?=$attachment->render($params['type'],$params);?>
 				<?php } ?>
@@ -49,7 +49,7 @@ foreach($main->access as $item){
 			<?=$main->longtext;?>		
 			<div class="clearfix">
 				<?php if($main->attachment) foreach($main->attachment as $item){ ?>		
-					<?php $attachment = new ObjectClasses($item['id']); ?>				
+					<?php $attachment = new \Scern\Lira\Classes\Object($item['id']); ?>				
 						<?php $params = json_decode($item['params'],1);?>
 						<?=$attachment->render($params['type'],$params);?>
 				<?php } ?>

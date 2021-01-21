@@ -57,7 +57,7 @@ if(!empty($data)) extract($data);
 						unset($item);
 						unset($value);				
 					?>
-					<div class="m-1 p-2 rounded-top" style="background-color: rgba(255, 255, 255, 0.9);">
+					<div class="m-1 rounded-top" style="background-color: rgba(255, 255, 255, 0.9);">
 					<?php
 						if(!empty($content)) foreach($content as $item){
 							if(!empty($item)) foreach($item as $value){

@@ -1,7 +1,7 @@
 <?php 
 defined('_DEXEC') or DIE;
-if(!empty($data)) extract($data); 
-$text = TextCore::getInstance();
+if (!empty($data)) extract ($data); 
+$text = \Scern\Lira\Core\Text::getInstance();
 ?>
 <div class="card m-1 bg-light">
 	<div class="card-header text-right text-success"><strong><?=$text->definition;?>  <i class="fa fa-plus"></i></strong></div>

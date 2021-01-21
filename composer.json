@@ -1,0 +1,20 @@
+{
+    "name": "scern/lira",
+    "description": "Lira small php platform",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Scern",
+            "email": "scern86@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+	"autoload": {
+	    "psr-4": {
+		 "Scern\\Lira\\": "src",
+		 "Components\\": "components",
+		 "Modules\\": "modules"
+		}
+	}
+}

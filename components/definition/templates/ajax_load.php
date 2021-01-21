@@ -1,9 +1,9 @@
 <?php 
 defined('_DEXEC') or DIE;
-if(!empty($data)) extract($data); 
-$text = TextCore::getInstance();
+if (!empty($data)) extract ($data); 
+$text = \Scern\Lira\Core\Text::getInstance();
 ?>
-<?php if(!empty($list)) foreach($list as $item){ ?>
+<?php if (!empty($list)) foreach ($list as $item) { ?>
 <tr>
 	<td><?=$item['title'];?> | <small class="text-success"><?=$item['type'];?></small> | <small class="text-info"><?=$item['description'];?></small></td>
 	<td class="text-right">

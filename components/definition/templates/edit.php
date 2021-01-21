@@ -1,7 +1,7 @@
 <?php 
 defined('_DEXEC') or DIE;
-if(!empty($data)) extract($data);
-$text = TextCore::getInstance(); 
+if (!empty($data)) extract ($data);
+$text = \Scern\Lira\Core\Text::getInstance(); 
 ?>
 <div class="card m-1 bg-light">
 	<div class="card-header text-right text-warning"><strong><?=$text->definition;?>  <i class="fa fa-pencil-alt"></i></strong></div>
@@ -15,8 +15,8 @@ $text = TextCore::getInstance();
 			<div class="form-group">
 				<label class="control-label" for="type"><strong><?=$text->type;?></strong></label>	
 				<select class="form-control" id="type" name="type">
-					<?php if(!empty($types)) foreach($types as $type){?>
-						<?php if($main->type==$type){?>
+					<?php if (!empty($types)) foreach ($types as $type) {?>
+						<?php if ($main->type==$type) {?>
 					<option value="<?=$type;?>" selected><?=$type;?></option>
 						<?php } else { ?>
 					<option value="<?=$type;?>"><?=$type;?></option>	
